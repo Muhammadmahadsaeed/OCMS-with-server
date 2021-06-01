@@ -74,10 +74,10 @@ async function pausePlayer() {
 async function stopPlayer() {
   const isStop = await audioRecorderPlayer.stopPlayer();
   console.log({ isStop })
-  audioRecorderPlayer.removePlayBackListener()
-  currentPosition = 0
-  currentCallback({ status: AUDIO_STATUS.stop })
-  audioRecorderPlayer = undefined
+  audioRecorderPlayer.removePlayBackListener();
+  currentPosition = 0;
+  currentCallback({ status: AUDIO_STATUS.stop });
+  audioRecorderPlayer = undefined;
 }
 
 export {
