@@ -290,13 +290,7 @@ const Conversation = (props) => {
           )}
           {isMessageType() == 'audio' && (
             <View style={{flex: 1}}>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
+              <View style={styles.audioView}>
                 <TouchableOpacity
                   activeOpacity={0.9}
                   onPress={() =>
@@ -304,7 +298,7 @@ const Conversation = (props) => {
                       ? pauseAudio()
                       : onStartPlay(message.message[0].url)
                   }
-                  style={{width: 35, height: 35, backgroundColor: 'red'}}>
+                  style={{width: 35, height: 35}}>
                   <Image
                     source={
                       isPlaying
@@ -314,20 +308,17 @@ const Conversation = (props) => {
                     style={{height: '100%', width: '100%'}}
                   />
                 </TouchableOpacity>
-                <View
-                  style={{
-                    backgroundColor: 'blue',
-                    flex: 1,
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    // alignItems: 'center',
-                  }}>
-                  <View style={{ marginHorizontal: 10}}>
-                    <View style={styles.viewBar}>
-                      <View style={[styles.viewBarPlay, {width: playWidth}]} />
-                    </View>
+                <View style={styles.viewBarWrapper}>
+                  <View style={styles.viewBar}>
+                    <View style={[styles.viewBarPlay, {width: playWidth}]} />
                   </View>
                 </View>
+              </View>
+              <View style={styles.audioView}>
+                <Text style={styles.duration}>
+                  {currentPositionSec ? playDuration : audioDurationMiliToSec()}
+                </Text>
+                <Text style={styles.time}>11:45</Text>
               </View>
             </View>
           )}
@@ -390,6 +381,7 @@ const styles = StyleSheet.create({
     color: 'grey',
     fontFamily: font.Fonts.josefReg,
     fontSize: 14,
+    marginLeft:45
   },
   docView: {
     flex: 1,
@@ -407,12 +399,24 @@ const styles = StyleSheet.create({
     fontFamily: font.Fonts.josefReg,
     fontSize: 15,
   },
+  audioView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  viewBarWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 10,
+    alignSelf: 'stretch',
+  },
   viewBar: {
     backgroundColor: '#ccc',
     height: 4,
-    // marginHorizontal: 2,
-    // alignSelf: 'stretch',
+    alignSelf: 'stretch',
   },
+
   viewBarPlay: {
     backgroundColor: 'white',
     height: 4,
