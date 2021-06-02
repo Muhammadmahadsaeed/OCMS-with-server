@@ -14,6 +14,8 @@ const AUDIO_STATUS = {
 }
 
 async function startPlayer(path, callback) {
+  console.log({ currentPath, path })
+
   if (currentPath === undefined) {
     currentPath = path
     currentCallback = callback
@@ -35,7 +37,7 @@ async function startPlayer(path, callback) {
 
   try {
     const activePath = await audioRecorderPlayer.startPlayer(currentPath);
-    console.log("======",activePath)
+    console.log({ activePath })
     currentCallback({
       status: (currentPath === path) && (currentPosition > 0) ? AUDIO_STATUS.resume : AUDIO_STATUS.begin
     })
@@ -71,6 +73,7 @@ async function pausePlayer() {
 
 async function stopPlayer() {
   const isStop = await audioRecorderPlayer.stopPlayer();
+  console.log({ isStop })
   audioRecorderPlayer.removePlayBackListener()
   currentPosition = 0
   currentCallback({ status: AUDIO_STATUS.stop })

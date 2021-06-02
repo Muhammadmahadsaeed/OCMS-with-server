@@ -31,6 +31,7 @@ const RegisterScreen = (navigation) => {
   const [fileUri, setFileUri] = useState('');
   const [imgUri, setImgUri] = useState('');
   const [errortext, setErrortext] = useState('');
+  const [userImage, setUserImage] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [agree, setAgree] = useState(false);
@@ -88,18 +89,18 @@ const RegisterScreen = (navigation) => {
     } else {
       const msg = 'Please check your email';
       setLoading(true);
-      const user = {
-        userName: userName,
-        email: userEmail,
-        profile: imgUri,
-        password: userPassword,
-        loginCompany: companyName,
-      };
-      fetch(`${api}user/`, {
+      let formdata = new FormData();
+      formdata.append('userName', userName);
+      formdata.append('email', userEmail);
+      formdata.append('profile', userImage);
+      formdata.append('password', userPassword);
+      formdata.append('loginCompany', companyName);
+
+      fetch(`${api}user`, {
         method: 'POST',
-        body: JSON.stringify(user),
+        body: formdata,
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       })
         .then((response) => response.json())
@@ -154,7 +155,6 @@ const RegisterScreen = (navigation) => {
       ImagePicker.openPicker({
         mediaType: 'photo',
         multiple: false,
-        includeBase64: true,
         width: 300,
         height: 400,
         cropping: true,
@@ -162,6 +162,17 @@ const RegisterScreen = (navigation) => {
       })
         .then((response) => {
           let base64 = `data:${response.mime};base64,${response.data}`;
+          console.log(response);
+          const imageName = response.path.split('/').pop();
+          let img = {
+            name: imageName,
+            type: response.mime,
+            uri:
+              Platform.OS === 'android'
+                ? response.path
+                : response.path.replace('file://', ''),
+          };
+          setUserImage(img);
           setImgUri(base64);
           setFileUri(response.path);
         })
@@ -258,6 +269,7 @@ const RegisterScreen = (navigation) => {
                 autoCapitalize="sentences"
                 returnKeyType="next"
                 onFocus={() => {
+                  setLoading(false);
                   setNameEmptyErorr(false);
                 }}
                 onSubmitEditing={() =>
@@ -292,6 +304,7 @@ const RegisterScreen = (navigation) => {
                 ref={emailInputRef}
                 returnKeyType="next"
                 onFocus={() => {
+                  setLoading(false);
                   setEmailEmptyErorr(false);
                 }}
                 onSubmitEditing={() =>
@@ -338,6 +351,7 @@ const RegisterScreen = (navigation) => {
                 ref={companyInputRef}
                 returnKeyType="next"
                 onFocus={() => {
+                  setLoading(false);
                   setCompanyEmptyErorr(false);
                 }}
                 onSubmitEditing={() =>
@@ -370,6 +384,7 @@ const RegisterScreen = (navigation) => {
                 ref={passwordInputRef}
                 returnKeyType="next"
                 onFocus={() => {
+                  setLoading(false);
                   setpwdEmptyErorr(false);
                 }}
                 secureTextEntry={hidePassword}
@@ -430,6 +445,7 @@ const RegisterScreen = (navigation) => {
                 ref={confirmPasswordInputRef}
                 returnKeyType="next"
                 onFocus={() => {
+                  setLoading(false);
                   setconfirmPwdEmptyErorr(false);
                 }}
                 secureTextEntry={hideConfirmPassword}

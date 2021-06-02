@@ -41,11 +41,12 @@ class ChatTab extends Component {
     await fetch(`${api}message/${this.props.user.user.user._id}`)
       .then((response) => response.json())
       .then((json) => {
+        console.log(json);
         this.setState({
+          loading: false,
           data: json.data,
           // data: this.state.data.concat(json),
           isLoading: false,
-          loading: false,
         });
       })
       .catch((err) => console.log(err));
@@ -167,30 +168,7 @@ class ChatTab extends Component {
             />
           </View>
           <View style={{flex: 1}}>
-            {arr.length ? (
-              <View>
-                {loading ? (
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <ActivityIndicator size="large" animating color="black" />
-                  </View>
-                ) : (
-                  <FlatList
-                    data={arr}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={(item) => this.renderItemComponent(item)}
-                    keyExtractor={(item, index) => index.toString()}
-                    // onEndReached={this.handleLoadMore}
-                    // onEndReachedThreshold={0}
-                    // ListFooterComponent={this.renderFooter}
-                  />
-                )}
-              </View>
-            ) : (
+            {!arr.length && !loading && (
               <View
                 style={{
                   flex: 1,
@@ -209,6 +187,26 @@ class ChatTab extends Component {
                   You've no recent messages, let's start a conversation!
                 </Text>
               </View>
+            )}
+            {!arr.length && loading ? (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <ActivityIndicator size="large" animating color="black" />
+              </View>
+            ) : (
+              <FlatList
+                data={arr}
+                showsVerticalScrollIndicator={false}
+                renderItem={(item) => this.renderItemComponent(item)}
+                keyExtractor={(item, index) => index.toString()}
+                // onEndReached={this.handleLoadMore}
+                // onEndReachedThreshold={0}
+                // ListFooterComponent={this.renderFooter}
+              />
             )}
           </View>
           <LinearGradient
@@ -340,12 +338,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, null)(ChatTab);
-
-// <View
-//   style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-//   <Image source={require('../../../asessts/images/box.png')} />
-//   <Text style={{textAlign: 'center'}}>
-//     You've no recent messages, let's start a conversation!
-//   </Text>
-// </View>
-// )}

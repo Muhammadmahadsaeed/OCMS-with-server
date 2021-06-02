@@ -69,7 +69,8 @@ const Conversation = (props) => {
           const {current_position, duration} = res.data;
           setCurrentPos(current_position);
           setDuration(duration);
-          millisToMinutesAndSeconds(current_position);
+          console.log('playing AUDIO');
+          // millisToMinutesAndSeconds(current_position);
           break;
         }
         case AudioManager.AUDIO_STATUS.pause: {
@@ -230,7 +231,7 @@ const Conversation = (props) => {
           style={[
             styles.messageBox,
             {
-              backgroundColor: isMyMessage() ? '#DCF8C5' : 'white',
+              backgroundColor: isMyMessage() ? '#00EBCF' : '#44D1FC',
               marginLeft: isMyMessage() ? 50 : 0,
               marginRight: isMyMessage() ? 0 : 50,
               marginVertical: isMyMessage() ? 5 : 5,
@@ -370,6 +371,7 @@ const styles = StyleSheet.create({
   message: {
     fontFamily: font.Fonts.josefReg,
     fontSize: 18,
+    color:'white'
   },
   time: {
     alignSelf: 'flex-end',

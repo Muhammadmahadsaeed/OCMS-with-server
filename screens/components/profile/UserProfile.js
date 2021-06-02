@@ -21,9 +21,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import font from '../../constants/font';
 import colors from '../../constants/colors';
 import ImagePicker from 'react-native-image-crop-picker';
-import {connect, useDispatch} from 'react-redux';
+import {connect, useDispatch,useSelector} from 'react-redux';
 
 const UserProfile = (navigation) => {
+  const {user, contactLengthCounter} = useSelector((state) => state);
+  console.log(user)
   const [fileUri, setfileUri] = useState('');
   const renderFileUri = () => {
     if (fileUri) {

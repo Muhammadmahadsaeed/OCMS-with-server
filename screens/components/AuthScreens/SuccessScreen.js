@@ -34,7 +34,6 @@ const SuccessScreen = (navigation) => {
     dispatch({type: 'ADD_TO_CONTACT_COUNT', payload: value});
   };
   const {user, contactLengthCounter} = useSelector((state) => state);
-  console.log('from redux============', contactLengthCounter);
   const askForPermissions = async () => {
     setLoading(true);
     if (user.user.user.role === 'User') {
